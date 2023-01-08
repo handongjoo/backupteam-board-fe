@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>게시글 작성 페이지</h1>
-    <form action="/home" id="article-form">
+    <form action="home" id="article-form">
         <div>
             <label for="title" style="display:inline-block; width: 80px;">제목</label>
             <input type="text" placeholder="제목" id="title" name="title">
@@ -18,6 +18,31 @@
             <!-- <input type="textarea" placeholder="내용" id="contents" name="contents"> -->
             <textarea placeholder="내용" id="contents" name="contents"></textarea>
         </div>
+        <button type="submit">작성하기</button>
     </form>
 </body>
 </html>
+<script>
+    document.getElementById("article-form").addEventListener("submit", (event) => {
+      event.preventDefault()
+  
+      const data = {
+        title: document.getElementById("title").value,
+        contents : document.getElementById("contents").value
+      }
+  
+      fetch("http://localhost:3000/article", {
+        method: "POST",
+        headers: {
+          "Content-Type" : "application/json"
+        },
+        body: JSON.stringify(data)
+      }).then(response => response.json())
+      .then(data => {
+        location.href = "/home"
+      }).catch(err => {
+          console.log(err)
+        alert("모든 항목을 작성해주세요.")
+      })
+    })
+  </script>

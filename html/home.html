@@ -5,12 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Home</title>
 </head>
 <body>
     <h1>게시판</h1>
     <button type="onclick" onclick="location.href='login'">로그아웃</button>
     <button type="onclick" onclick="location.href='profile'">내 프로필</button>
+    <button type="onclick" onclick="location.href='article'">글 작성하기</button>
     <table style="border: 1px solid black; width: 90%" id="article-table">
         <tr>
             <th style="border: 1px solid black">순번</th>
@@ -23,7 +24,9 @@
 </body>
 </html>
 <script>
-    fetch("http://localhost:3000/home").then((response) => response.json()).then(articles => {
+    fetch("http://localhost:3000/home")
+    .then((response) => response.json())
+    .then(articles => {
         for(let i = 0; i < articles.length; i++) {
             const row = `<td style="border: 1px solid black">${articles[i].id}</td>
             <td style="border: 1px solid black">${articles[i].title}</td>

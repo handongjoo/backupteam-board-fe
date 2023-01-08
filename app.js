@@ -1,11 +1,11 @@
 const express = require("express");
-const cors = require("cors")
+// const cors = require("cors")
 
 
 const app = express();
-app.use(express.json(), cors());
+app.use(express.json());
 
-app.get("/articles", (req, res) => {
+app.get("/article", (req, res) => {
     res.sendFile(__dirname + "/html/article.html")
 })
 
