@@ -17,13 +17,14 @@
       <label for="password" style="display:inline-block; width: 80px;">비밀번호</label>
       <input type="password" placeholder="비밀번호 입력하세요" id="password" name="password">
     </div>
-    <button type="submit">로그인</button>
+    <button id="login-button">로그인</button>
   </form>
+  
 </body>
 </html>
 
 <script>
-  document.getElementById("login-form").addEventListener("submit", (event) => {
+  document.getElementById("login-button").addEventListener("click", (event) => {
     event.preventDefault()
 
     const data = {
@@ -38,12 +39,18 @@
         "Content-Type" : "application/json"
       },
       body: JSON.stringify(data)
-    }).then(response => response.json())
+    })
+    .then(res => res.json())
     .then(data => {
-      location.href = "/home"
-    }).catch(err => {
+        if (data.success) {
+            console.log(data)
+            // location.href="/home"
+        } else {
+            alert("이메일이나 비밀번호가 틀렸습니다.")
+        }
+    }
+    ).catch(err => {
         console.log(err)
-      alert("없는 계정입니다.")
     })
   })
 </script>
