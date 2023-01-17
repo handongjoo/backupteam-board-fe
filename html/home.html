@@ -20,29 +20,18 @@
             <th style="border: 1px solid black">조회수</th>
             <!-- <th style="border: 1px solid black">조횟수</th> -->
         </tr>
-        <div>
-            <table>
-                <tr>
-                    <td><span>PREV</span></td>
-                    <td>
-                        <span>
-                                <a href="/home?page=1"> <span>1</span></a>
-                                <a href="/home?page=2"> <span>2</span></a>
-                                <a href="/home?page=3"> <span>3</span></a>
-                                <a href="/home?page=4"> <span>4</span></a>
-                                <span>···</span>
-                                <a href="/home?page=30"> <spa>30</spa></a>
-                        </span>
-                    </td>
-                    <td><a href="/home?page=2"><span>NEXT</span></a></td>
-                </tr>
-            </table>
-        </div>
     </table>
+    <div>
+        <table id="paging">
+        </table>
+    </div>
 </body>
 </html>
 <script>
-    fetch("http://localhost:3000/home/")
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    fetch(`http://localhost:3000/home?page=${params.page || 1}`)
+    // fetch("http://localhost:3000/home")
     .then((response) => response.json())
     .then(articles => {
         for(let i = 0; i < articles.rows.length; i++) {
@@ -55,6 +44,38 @@
             tr.innerHTML = row
             document.getElementById("article-table").appendChild(tr)
         }
+        if(articles.currentPage <= 3) { 
+            const row = `
+            <td><a href="/home"><span>1</span></td> 
+            <td><a href="/home?page=2"><span>2</span></td> 
+            <td><a href="/home?page=3"><span>3</span></td>
+            <td><a href="/home?page=4"><span>4</span></td> 
+            <td><span>···</span></td> 
+            <td><a href="/home?page=${articles.lastPage}"><span>${articles.lastPage}</span></td>
+            ` 
+            const tr = document.createElement("tr")
+            tr.innerHTML = row
+            document.getElementById("paging").appendChild(tr)
 
+            }
+            else {
+                const row = `
+                <td><a href="/home"><span>1</span></td>
+                <td><span>···</span></td>
+                <td><a href="/home?page=${articles.currentPage - 2}"><span>${articles.currentPage - 2}</span></td> 
+                <td><a href="/home?page=${articles.currentPage - 1}"><span>${articles.currentPage - 1}</span></td> 
+                <td><a href="/home?page=${articles.currentPage}"><span>${articles.currentPage}</span></td> 
+                <td><a href="/home?page=${Number(articles.currentPage) + 1}"><span>${Number(articles.currentPage) + 1}</span></td>
+                <td><a href="/home?page=${Number(articles.currentPage) + 2}"><span>${Number(articles.currentPage) + 2}</span></td> 
+                <td><span>···</span></td> 
+                <td><a href="/home?page=${articles.lastPage}"><span>${articles.lastPage}</span></td>
+                `
+                const tr = document.createElement("tr")
+                tr.innerHTML = row
+                document.getElementById("paging").appendChild(tr)
+            }
+
+            
     })
 </script>
+<!-- if (articles.currentPage > 3) -->
