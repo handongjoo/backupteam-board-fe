@@ -26,31 +26,27 @@
 </body>
 </html>
 <script>
-    fetch("http://localhost:3000/profile",
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    fetch("http://localhost:3000/profile/${id}",
     {credentials: "include"})
     .then((response) => response.json())
     .then(info => {
-        for(let i = 0; i < info.length; i++) {
             const userInfo = `
-            <td style="border: 1px solid black">${info[i].id}</td>
-            <td style="border: 1px solid black">${info[i].email}</td>
+            <td style="border: 1px solid black">${info.myProfile.id}</td>
+            <td style="border: 1px solid black">${info.myProfile.email}</td>
             `
             const tr = document.createElement("tr")
             tr.innerHTML = userInfo
             document.getElementById("info-table").appendChild(tr)
-        }
-    })
-    fetch("http://localhost:3000/profile/${id}",
-    {credentials: "include"}
-    )   
-    .then((response) => response.json())
-    .then(article => {
-        for(let i = 0; i < article.length; i++) {
+
+            for(let i = 0; i < info.myArticles.length; i++) {
             const articles = `
-            <td style="border: 1px solid black">${article[i].id}</td>
-            <td style="border: 1px solid black">${article[i].title}</td>
-            <td style="border: 1px solid black">${article[i].contents}</td>
+            <td style="border: 1px solid black">${info.myArticles[i].id}</td>
+            <td style="border: 1px solid black">${info.myArticles[i].title}</td>
+            <td style="border: 1px solid black">${info.myArticles[i].contents}</td>
             `
+
             const tr = document.createElement("tr")
             tr.innerHTML = articles
             document.getElementById("article-table").appendChild(tr)
